@@ -1,13 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
+# This is the notebook I have used from week 1 of class:
+#https://git.arts.ac.uk/rfiebrink/ExploringMachineIntelligence_Spring2023/tree/main/week1
 
-# # Week 1 
-# # Intro to working with neural nets in keras
-# 
-# 
-# Before running this the first time, please make sure you have (1) installed the necessary Python tools and libraries, and (2) activated your enviromment!
-# 
-# Please see instructions for this under "Instructions for Setting Up & Using Python & Jupyter" in [moodle](https://moodle.arts.ac.uk/course/view.php?id=71166).
+# I have used this neural network to try and train it on the landmark data from the hand gesture model. However after adapting the code using Chat GTP to help it does not read the data set I have made correclty. You can see the changes I have attempted in the commented out sections. 
+
+#!/usr/bin/env python
+
 
 # In[21]:
 
