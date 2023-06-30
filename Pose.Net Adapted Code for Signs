@@ -1,0 +1,147 @@
+
+// This Mimic project uses pose.net to recognise the sign language for a,b,c,d,e in BSL.
+// Link to my Mimic project https://mimicproject.com/code/3c1ebc66-e015-c5c0-47e2-f310069b10fc
+
+//The base of this pose.net code is forked from https://mimicproject.com/code/48d5b6d9-794e-97d4-a16e-4780cf6c4a8c by louis-dev and is attributed as follows:    
+//"From ML5 examples 
+//https://github.com/ml5js/ml5-examples/blob/release/javascript/PoseNet/sketch.js
+// Copyright (c) 2018 ml5
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT"   
+////////////////////////////////////////////////////////////////////////
+
+//I have used chat GTP and https://www.w3schools.com/js/js_functions.asp as tutorials for changing this code.
+
+///////////////////////////////////////////////////////////////////////////
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script src="https://mimicproject.com/libs/learner.v.0.2.js"></script>
+    <script src="https://unpkg.com/ml5@0.3.1/dist/ml5.min.js" type="text/javascript"></script>
+    
+    <style>
+      div {margin:10px;}
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="320" height="240"></canvas> 
+    <video id="video" width="320" height="240" autoplay style="display: none"></video>
+    <div id="dataset"></div>
+    <div id="text" style="font-size: 24px;"></div>
+    <script src="Camera"></script>
+    <script type="text/javascript">
+      
+      
+      ////ML////       
+      const learner = new Learner();
+      // Add GUI if you want, give id of parent element
+      learner.addGUI(document.getElementById("dataset"));
+      learner.addClassifier(5, true, 10); //added classifiers
+      
+//////////////////////////////// my code added///////////////////////////////
+      //input counter to control the sample speed - takes 5 samples before printing value
+      let inputs = [];
+      let inputCounter = 0;
+      const inputCountThreshold = 5; //no. of samples per    output. The higher the number the slower the letter will apear on screen. 
+      const outputBuffer = [];
+      
+/////////////////////my code snippet ends///////////////////////////////////
+      
+      ////INPUT////
+      const poseNet = ml5.poseNet(video);
+      poseNet.on('pose', gotPoses);
+      
+      function gotPoses(results) {
+        poses = results;
+        let row = [];
+        if (poses[0]) {
+          poses[0].pose.keypoints.forEach((pt) => {
+            row = row.concat([pt.position.x, pt.position.y, pt.score]);
+          });
+///////////////////my code added using chat GTP//////////////////////////////////
+          
+          inputs.push(row);   // Add the current row to the inputs array
+          inputCounter++;  // Increment the input counter
+          
+          // Check if the input counter has reached the threshold 
+          if (inputCounter >= inputCountThreshold) {  // If the threshold is reached, call the averageInputs() function to compute the averaged input
+            const averagedInput = averageInputs();
+            learner.newExample(averagedInput, learner.y); // Pass the averaged input and some other value (learner.y) to the learner's newExample() function
+            
+            // Reset the inputs array and input counter for the next batch
+            inputs = []; // A variable to store the inputs
+            inputCounter = 0; // A counter to keep track of the number of inputs
+          }
+        }
+      }
+      // This function computes the average of the inputs accumulated so far
+      const averageInputs = () => {  // Get the length of the inputs array
+        const inputLength = inputs.length;
+        const inputDimensions = inputs[0].length;   // Get the number of dimensions in each input
+        const averagedInput = new Array(inputDimensions).fill(0); // Create a new array to store the averaged input, initialized with zeros
+        
+        
+        for (let i = 0; i < inputLength; i++) {   // Iterate over the inputs array
+          const input = inputs[i];
+          for (let j = 0; j < inputDimensions; j++) { // Compute the sum of each dimension of the input and add it to the corresponding dimension in averagedInput
+            averagedInput[j] += input[j];
+          }
+        }
+        // Divide each dimension in averagedInput by the inputLength to compute the average
+        for (let j = 0; j < inputDimensions; j++) {
+          averagedInput[j] /= inputLength;
+        }
+          // Return the averaged input
+        return averagedInput;
+      }
+      
+/////////////////////////////////My Code Snippet ends////////////////////////////////
+      
+      ////OUTPUT////
+      // Callback for classification result
+      learner.onOutput = (output) => {
+        outputBuffer.push(output.label);
+        if (outputBuffer.length >= inputCountThreshold) {
+          const averageOutput = averageOutputs();
+          updateText(averageOutput);
+          outputBuffer.length = 0;
+        }
+      };
+
+      const averageOutputs = () => {
+        const outputLength = outputBuffer.length;
+        let sum = 0;
+        for (let i = 0; i < outputLength; i++) {
+          sum += outputBuffer[i];
+        }
+        return Math.round(sum / outputLength);
+      };
+      
+/////////////////////////////my code changing the update between clasifications from coloured boxes to text and the addition of if else statement using https://www.w3schools.com/js/js_functions.asp to help.
+      ////////////////////////////////////////////////////////////////////////////////////
+      const updateText = (output) => {
+        const textElement = document.getElementById("text");
+        let text = "";
+        if (learner.y[0] == 0) {
+          text = "a";
+        } else if (learner.y[0]== 1) { // if model detects pose trained to '1' print "b".
+          text = "b";
+        } else if (learner.y[0] == 2) {
+          text = "c";
+        } else if (learner.y[0] == 3) {
+          text = "d";
+        } else if (learner.y[0] == 4) {
+          text = "e";
+        }
+        // print new letter next to exisiting text in a line
+        textElement.textContent += " " + text;
+      };
+
+      updateText();
+      
+///////////////////// end of my code //////////////////////////
+    </script>
+  </body>
+</html>
