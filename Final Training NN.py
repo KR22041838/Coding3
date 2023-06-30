@@ -5,14 +5,7 @@
 
 #!/usr/bin/env python
 
-
-# In[21]:
-
-
 # issues with how data is written is distributed between x and y train
-
-
-# In[26]:
 
 
 import tensorflow as tf
