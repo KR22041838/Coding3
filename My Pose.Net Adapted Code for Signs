@@ -60,8 +60,10 @@
           poses[0].pose.keypoints.forEach((pt) => {
             row = row.concat([pt.position.x, pt.position.y, pt.score]);
           });
-///////////////////my code added using chat GTP//////////////////////////////////
-          
+////////////////////////////////////////my code added using chat GTP//////////////////////////////////
+      
+// this code block takes the average of the 5 inputs stated by the inputCountThreshold and produces the average as the output.  
+
           inputs.push(row);   // Add the current row to the inputs array
           inputCounter++;  // Increment the input counter
           
