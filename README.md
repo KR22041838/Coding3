@@ -44,6 +44,8 @@ Gesture Recogniser Documentation:
 https://developers.google.com/mediapipe/solutions/vision/gesture_recognizer/python 
 Pose.Net Mimic Code:
 https://mimicproject.com/code/48d5b6d9-794e-97d4-a16e-4780cf6c4a8c
+Neural Network Notebook:
+https://git.arts.ac.uk/rfiebrink/ExploringMachineIntelligence_Spring2023/tree/main/week1
 W3schools:
 https://www.w3schools.com/jsref/prop_node_textcontent.asp
 Chat GTP.
