@@ -1,5 +1,9 @@
 
 # Sign Language App Project
+There are three Coding sections to this Project:
+- Pose.Net: Final Pose.Net Sign
+- Gesture Recognition: Final Sign Language Notebook
+- Neural Network: Final Training NN
 
 For this project I wanted to use sign language to create a model which translated images of British sign language finger spelling into letters. With the idea of bringing sign language into primary school education to help with learning to spell as studies suggest children learn faster when combining the two and it can aid in things such as dyslexia. The end goal would be to create a game app where children our given verbal prompts or images such as animals and a camera reads the child’s finger spelling in real time and prints it onto the screen where they can see if they have the correct spelling. The app could be used in class or to aid spelling practice outside of school on their own. 
 
